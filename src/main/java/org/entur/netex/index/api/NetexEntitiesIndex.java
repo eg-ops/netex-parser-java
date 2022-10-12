@@ -15,6 +15,7 @@ import org.rutebanken.netex.model.GroupOfLines;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.JourneyPattern;
+import org.rutebanken.netex.model.ResponsibilitySet;
 import org.rutebanken.netex.model.ServiceJourneyPattern;
 import org.rutebanken.netex.model.Line;
 import org.rutebanken.netex.model.Network;
@@ -299,6 +300,12 @@ public interface NetexEntitiesIndex {
      * @return
      */
     NetexEntityIndex<TypeOfProductCategory> getTypeOfProductCategoryIndex();
+
+    /**
+     * Get an entity index of ResponsibilitySet
+     * @return
+     */
+    NetexEntityIndex<ResponsibilitySet> getResponsibilitySetIndex();
 
     Collection<CompositeFrame> getCompositeFrames();
     Collection<ResourceFrame> getResourceFrames();

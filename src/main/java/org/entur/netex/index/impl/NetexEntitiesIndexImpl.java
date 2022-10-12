@@ -20,6 +20,7 @@ import org.rutebanken.netex.model.GroupOfLines;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.JourneyPattern;
+import org.rutebanken.netex.model.ResponsibilitySet;
 import org.rutebanken.netex.model.ServiceJourneyPattern;
 import org.rutebanken.netex.model.Line;
 import org.rutebanken.netex.model.Network;
@@ -99,6 +100,7 @@ public class NetexEntitiesIndexImpl implements NetexEntitiesIndex {
     public final NetexEntityIndex<GroupOfTariffZones> groupOfTariffZonesById;
     public final Multimap<String, Parking> parkingsByParentSiteRef;
     public final NetexEntityIndex<TypeOfProductCategory> typeOfProductCategoryById;
+    public final NetexEntityIndex<ResponsibilitySet> responsibilitySetsById;
 
 
     // Relations between entities - The Netex XML sometimes rely on the the
@@ -159,6 +161,7 @@ public class NetexEntitiesIndexImpl implements NetexEntitiesIndex {
         this.routePointById = new NetexEntityMapByIdImpl<>();
         this.fareZoneById = new NetexEntityMapByIdImpl<>();
         this.groupOfTariffZonesById = new NetexEntityMapByIdImpl<>();
+        this.responsibilitySetsById = new NetexEntityMapByIdImpl<>();
         this.compositeFrames = new HashSet<>();
         this.siteFrames = new HashSet<>();
         this.resourceFrames = new HashSet<>();
@@ -374,6 +377,9 @@ public class NetexEntitiesIndexImpl implements NetexEntitiesIndex {
 
     @Override
     public NetexEntityIndex<TypeOfProductCategory> getTypeOfProductCategoryIndex() { return typeOfProductCategoryById; }
+
+    @Override
+    public NetexEntityIndex<ResponsibilitySet> getResponsibilitySetIndex() { return responsibilitySetsById; }
 
     @Override
     public Collection<ResourceFrame> getResourceFrames() {

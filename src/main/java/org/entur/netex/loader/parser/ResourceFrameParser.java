@@ -8,6 +8,8 @@ import org.rutebanken.netex.model.Operator;
 import org.rutebanken.netex.model.Organisation_VersionStructure;
 import org.rutebanken.netex.model.OrganisationsInFrame_RelStructure;
 import org.rutebanken.netex.model.ResourceFrame_VersionFrameStructure;
+import org.rutebanken.netex.model.ResponsibilitySet;
+import org.rutebanken.netex.model.ResponsibilitySetsInFrame_RelStructure;
 import org.rutebanken.netex.model.TypesOfValueInFrame_RelStructure;
 import org.rutebanken.netex.model.TypeOfProductCategory;
 import org.rutebanken.netex.model.TypeOfValue_VersionStructure;
@@ -27,11 +29,13 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
     private final Collection<Operator> operators = new ArrayList<>();
     private Collection<Branding> brandings = new ArrayList<>();
     private Collection<TypeOfProductCategory> typeOfProductCategories = new ArrayList<>();
+    private List<ResponsibilitySet> responsibilitySets = new ArrayList<>();
 
     @Override
     void parse(ResourceFrame_VersionFrameStructure frame) {
         parseOrganization(frame.getOrganisations());
         parseTypeOfValues(frame.getTypesOfValue());
+        parseResponsibilitySets(frame.getResponsibilitySets());
 
         // Keep list sorted alphabetically
         informOnElementIntentionallySkipped(LOG, frame.getBlacklists());
@@ -41,7 +45,6 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
         informOnElementIntentionallySkipped(LOG, frame.getGroupsOfEntities());
         informOnElementIntentionallySkipped(LOG, frame.getGroupsOfOperators());
         informOnElementIntentionallySkipped(LOG, frame.getOperationalContexts());
-        informOnElementIntentionallySkipped(LOG, frame.getResponsibilitySets());
         informOnElementIntentionallySkipped(LOG, frame.getSchematicMaps());
         informOnElementIntentionallySkipped(LOG, frame.getVehicles());
         informOnElementIntentionallySkipped(LOG, frame.getVehicleEquipmentProfiles());
@@ -53,12 +56,17 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
         verifyCommonUnusedPropertiesIsNotSet(LOG, frame);
     }
 
+    private void parseResponsibilitySets(ResponsibilitySetsInFrame_RelStructure responsibilitySets) {
+       this.responsibilitySets = responsibilitySets.getResponsibilitySet();
+    }
+
     @Override
     void setResultOnIndex(NetexEntitiesIndex netexIndex) {
         netexIndex.getAuthorityIndex().putAll(authorities);
         netexIndex.getOperatorIndex().putAll(operators);
         netexIndex.getBrandingIndex().putAll(brandings);
         netexIndex.getTypeOfProductCategoryIndex().putAll(typeOfProductCategories);
+        netexIndex.getResponsibilitySetIndex().putAll(responsibilitySets);
     }
 
 
