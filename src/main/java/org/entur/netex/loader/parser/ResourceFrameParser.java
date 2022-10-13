@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.Authority;
 import org.rutebanken.netex.model.Branding;
+import org.rutebanken.netex.model.OperationalContext;
+import org.rutebanken.netex.model.OperationalContextsInFrame_RelStructure;
 import org.rutebanken.netex.model.Operator;
 import org.rutebanken.netex.model.Organisation_VersionStructure;
 import org.rutebanken.netex.model.OrganisationsInFrame_RelStructure;
@@ -30,12 +32,14 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
     private Collection<Branding> brandings = new ArrayList<>();
     private Collection<TypeOfProductCategory> typeOfProductCategories = new ArrayList<>();
     private List<ResponsibilitySet> responsibilitySets = new ArrayList<>();
+    private List<OperationalContext> operationalContext = new ArrayList<>();
 
     @Override
     void parse(ResourceFrame_VersionFrameStructure frame) {
         parseOrganization(frame.getOrganisations());
         parseTypeOfValues(frame.getTypesOfValue());
         parseResponsibilitySets(frame.getResponsibilitySets());
+        parseOperationalContexts(frame.getOperationalContexts());
 
         // Keep list sorted alphabetically
         informOnElementIntentionallySkipped(LOG, frame.getBlacklists());
@@ -44,7 +48,6 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
         informOnElementIntentionallySkipped(LOG, frame.getEquipments());
         informOnElementIntentionallySkipped(LOG, frame.getGroupsOfEntities());
         informOnElementIntentionallySkipped(LOG, frame.getGroupsOfOperators());
-        informOnElementIntentionallySkipped(LOG, frame.getOperationalContexts());
         informOnElementIntentionallySkipped(LOG, frame.getSchematicMaps());
         informOnElementIntentionallySkipped(LOG, frame.getVehicles());
         informOnElementIntentionallySkipped(LOG, frame.getVehicleEquipmentProfiles());
@@ -56,8 +59,16 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
         verifyCommonUnusedPropertiesIsNotSet(LOG, frame);
     }
 
+    private void parseOperationalContexts(OperationalContextsInFrame_RelStructure operationalContexts) {
+        if (operationalContexts != null && operationalContexts.getOperationalContext() != null){
+            this.operationalContext = operationalContexts.getOperationalContext();
+        }
+    }
+
     private void parseResponsibilitySets(ResponsibilitySetsInFrame_RelStructure responsibilitySets) {
-       this.responsibilitySets = responsibilitySets.getResponsibilitySet();
+        if (responsibilitySets != null && responsibilitySets.getResponsibilitySet() != null){
+            this.responsibilitySets = responsibilitySets.getResponsibilitySet();
+        }
     }
 
     @Override
@@ -67,6 +78,7 @@ class ResourceFrameParser extends NetexParser<ResourceFrame_VersionFrameStructur
         netexIndex.getBrandingIndex().putAll(brandings);
         netexIndex.getTypeOfProductCategoryIndex().putAll(typeOfProductCategories);
         netexIndex.getResponsibilitySetIndex().putAll(responsibilitySets);
+        netexIndex.getOperationalContextIndex().putAll(operationalContext);
     }
 
 
